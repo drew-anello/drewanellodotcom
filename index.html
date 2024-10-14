@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drew Anello Developer</title>
+    <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body class="bg-gray-900 text-green-500 font-mono h-screen flex items-center justify-center">
+    <div class="bg-black p-6 rounded-lg w-full sm:w-3/4 md:w-1/2 lg:w-1/3 shadow-lg">
+        <div id="terminal"></div>
+            <div id="prompt" class="mb-4">
+                <p>What's your name?</p>
+                <input 
+                    type="text" 
+                    id="name-input" 
+                    class="bg-black text-green-500 border-none outline-none w-full p-2"
+                    autocomplete="off"
+                    placeholder="Type your name and press Enter..."
+                    onkeypress="handleKeyPress(event)"
+                />
+            </div>
+            <div id="response"></div>
+        </div>
+    </div>
+
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                const name = event.target.value;
+                if (name.trim() !== "") {
+                    document.getElementById('response').innerHTML = `
+                        <p id="welcome-message">Hi, ${name} 👋, welcome to My Website! 💻</p>
+                        <div class="mt-4 flex flex-wrap">
+                            <button class="bg-green-500 text-black p-2 rounded m-2 flex-grow" onclick="showSection('about')">About Me</button>
+                            <button class="bg-green-500 text-black p-2 rounded m-2 flex-grow" onclick="showSection('resume')">Resume</button>
+                            <button class="bg-green-500 text-black p-2 rounded m-2 flex-grow" onclick="showSection('github')">Github</button>
+                            <button class="bg-green-500 text-black p-2 rounded m-2 flex-grow" onclick="showSection('contact')">Contact Me</button>
+                        </div>
+                        <div id="section-content" class="mt-4"></div>
+                    `;
+                    document.getElementById('prompt').style.display = 'none';
+                }
+            }
+        }
+
+        function showSection(section) {
+            let content = '';
+            switch(section) {
+                case 'about':
+                    content = '<p>I’m a software engineer with a strong focus on building highly available, scalable, and efficient applications that deliver exceptional user experiences. Currently at iMentor, a non-profit edtech organization, I specialize in technologies like Node.js, TypeScript, Python, and various AWS services. I’m passionate about designing and maintaining robust platforms that support mission-critical systems.</p>';
+                    break;
+                case 'resume':
+                    document.getElementById('terminal').innerHTML += `
+                        <p>Download resume? Type 'y' to download or 'n' to view on the page.</p>
+                        <input 
+                            type="text" 
+                            id="resume-input" 
+                            class="bg-black text-green-500 border-none outline-none w-full p-2"
+                            autocomplete="off"
+                            placeholder="Type 'y' or 'n' and press Enter..."
+                            onkeypress="handleResumeKeyPress(event)"
+                        />
+                    `;
+                    document.getElementById('welcome-message').style.display = 'none';
+                    break;
+                case 'github':
+                    content = '<p>Github: <a href="https://github.com/yourusername" target="_blank">https://github.com/yourusername</a></p>';
+                    break;
+                case 'contact':
+                    content = '<p>Contact Me: [Your contact information here]</p>';
+                    break;
+                default:
+                    content = '<p>Section not found.</p>';
+            }
+            document.getElementById('section-content').innerHTML = content;
+            document.getElementById('welcome-message').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
